@@ -1,7 +1,7 @@
 # カニジャン 仕様書
 
 ## 固定仕様
-- ゲーム名は「カニジャン」。リポジトリ名が nanijan でも、game_slug は `kanijan`、公開予定 URL は `https://chameleonjp.codeberg.page/kanijan/` とする。
+- ゲーム名は「カニジャン」。対象リポジトリは `chameleonjp-lab/kanijan`。game_slug は `kanijan`、公開予定 URL は `https://chameleonjp.codeberg.page/kanijan/` とする。
 - 中央の 🦀 を、左右から飛んでくる 🍣 または 🍤 に合わせてタップでジャンプさせ、高く積む。
 - 旧足場案の絵文字は使用しない。
 - 1プレイ最大60秒。60秒経過、🦀落下、バランスゲージ最大、リタイアで終了する。

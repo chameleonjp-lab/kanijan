@@ -51,3 +51,25 @@
 ## 懸念
 - Supabase RPCの戻り値形状は環境差があり得るため、配列またはdata配列に対応している。
 - 実験場側の固定GAMES配列はこのリポジトリでは編集していない。
+
+## 公開前再修正確認
+- [x] READYで「4」が表示されない設計になっている。
+- [x] READYは 3 → 2 → 1 → GO! の順で表示される。
+- [x] READY中は PLAYING ではないため、足場移動・当たり判定・スコア加算が行われない。
+- [x] `readyCompleted` により `startGame` の二重実行を防いでいる。
+- [x] 飛んでくる🍣🍤のY座標は `landingY` 基準になっている。
+- [x] 🦀の基本Y座標は `landingY` 基準になっている。
+- [x] 高さが増えても、🦀が上方向へ逃げ続ける構造ではなくなっている。
+- [x] スコア計算は変更していない。
+- [x] ランキング送信処理は変更していない。
+- [x] Supabase URL / Publishable key / RPC名は変更していない。
+- [x] READMEとSPECの対象リポジトリ説明は `chameleonjp-lab/kanijan` に合っている。
+- [x] 古い「GitHubリポジトリ名は nanijan」という説明は残っていない。
+
+確認方法：
+- `index.html` 内で `Math.ceil((state.readyDuration-elapsed)/1000)` が残っていないことを確認した。
+- `index.html` 内で `baseY-visibleCount*step-34` の構造が残っていないことを確認した。
+- `index.html` 内で `getLandingY` を基準に `spawnPlatform` と `draw` が動くことを確認した。
+- `README.md` / `docs/SPEC.md` 内の `nanijan` 説明を確認した。
+- ランキング処理の `submit_score` / `get_best_score_ranking` が維持されていることを確認した。
+- 今回の作業差分が `docs/IMPLEMENTATION_PLAN.md` と `docs/REVIEW_CHECKLIST.md` の確認記録追記のみで、`index.html` を変更していないことを確認した。

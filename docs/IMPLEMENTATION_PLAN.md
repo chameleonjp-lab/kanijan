@@ -112,3 +112,16 @@
 - ランキング: `GAME_SLUG`、`GAME_URL`、Supabase URL、Publishable key、`submit_score`、`get_best_score_ranking` は変更しない。
 - 影響関数: `spawnPlatform`、`updateGame`、`handleJump`、`applySuccess`、描画/演出、README/SPEC/チェックリスト。
 - テスト方法: HTML内JavaScript構文確認、固定文字列の `rg` 確認、ランキング/Supabase非変更確認、ローカルHTTP配信で手動確認。
+
+
+## 2026-06-19 判定修正・🍥追加計画
+- 原因整理: 到達済み/通過済みの食材にも距離ベースの `timeToHit` を使うと、ぶつかった状態と早すぎ状態が混ざる。
+- 判定順: 処理済み確認、位置更新、到達判定、ジャンプ判定、未ジャンプ到達時のぶつかり判定の順にする。
+- 到達判定: start/target/totalDistance から `progress` を持ち、`progress >= 1` または衝突半径内なら到達済みとする。
+- 二重判定防止: 食材ごとに `resolved` を持ち、成功/失敗が決まった時点で true にする。
+- ルール説明: 短いプレイヤー向け文にし、ゲージが増える時と減る時を分ける。
+- シェア文: Web Share API もクリップボードもURLだけにせず、`text` に全文を入れる。
+- 🍥追加: 高さ50段以上で約20%出現。基本速度は旧🍣基準150×2.3=345。
+- ランキング: GAME_SLUG、GAME_URL、Supabase URL、Publishable key、RPC名、結果画面の自動送信1回は変更しない。
+- 影響関数: `spawnPlatform`、`updateGame`、`handleJump`、`timeToHit`、`applyFailure`、`shareHome`、`shareResult`。
+- テスト方法: JavaScript構文確認、固定文字列確認、ランキング/Supabase非変更確認、手動プレイ確認。

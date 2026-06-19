@@ -46,7 +46,7 @@
 - `judgeLanding(offset, type)`: PERFECT / GOOD / OK / MISS を返す。
 - `applySuccess(judge, platformType)`: スコア、コンボ、高さ、バランス、到達ボーナスを更新する。
 - `finishGame(reason)`: 結果を固定しRESULTへ移行する。
-- `submitRankingOnce()`: 0点以外を submit_score RPC で1回だけ送信する。
+- `submitRankingOnce()`: 通常0点以外、またはリタイア時は0点でも submit_score RPC で1回だけ送信する。
 - `fetchRanking()`: get_best_score_ranking を取得し結果画面に表示する。
 - `shareHome()` / `shareResult()`: Web Share APIまたはクリップボードコピーを行う。
 
@@ -67,7 +67,7 @@
 - headerには publishable key / apikey / Authorization Bearer publishable key を使う。
 - bodyは `p_display_name`, `p_game_slug`, `p_score`, `p_client_version`。
 - `game.rankingSubmitted` と `game.rankingSubmitStarted` で二重送信を防ぐ。
-- 0点の場合は送信せず、結果画面に未送信理由を出す。
+- 通常0点の場合は送信せず、結果画面に未送信理由を出す。リタイア時は0点でもプレイ回数計測のため送信する。
 - 送信失敗時は結果を壊さず「ランキング送信に失敗しました」と表示する。
 - ランキング取得は `get_best_score_ranking` を結果画面で1回だけ呼ぶ。
 
@@ -125,3 +125,20 @@
 - ランキング: GAME_SLUG、GAME_URL、Supabase URL、Publishable key、RPC名、結果画面の自動送信1回は変更しない。
 - 影響関数: `spawnPlatform`、`updateGame`、`handleJump`、`timeToHit`、`applyFailure`、`shareHome`、`shareResult`。
 - テスト方法: JavaScript構文確認、固定文字列確認、ランキング/Supabase非変更確認、手動プレイ確認。
+
+
+## 2026-06-19 追加修正の実装前整理
+1. 連続被弾の原因: 失敗直後に現在食材を解決済みにしただけで次食材を即生成していたため、復帰前に次判定が始まっていた。
+2. `applyFailure` 後の即spawn: 旧実装は `applyFailure` 末尾で `spawnPlatform()` を呼んでいたため削除対象。
+3. HIT後の復帰時間: 🍤/🍥を区別せずHIT共通で0.55秒待ち、現在食材は破棄する。
+4. EARLY後の復帰時間: 0.32秒待ち、次食材は復帰完了後に生成する。
+5. 復帰中のタップ反応: 判定せず、🦀を小さく跳ねさせて「次に備えて！」を表示する。
+6. `pendingJump` 持ち越し防止: 復帰開始時・復帰中・終了開始時に `pendingJump=false` にする。
+7. ENDING状態: 終了条件で結果値を固定し、2秒タイマー後にRESULTへ移行する。ENDING中は更新判定を行わない。
+8. リタイア計測: `wasRetired` を固定し、0点でも `submit_score` の未送信分岐を通さない。
+9. 50段以降ガイド非表示: 描画時に `game.height < 50` の場合だけガイドラインを描く。
+10. 長押し対策: ゲーム操作領域にCSSとイベント抑制を追加し、ホーム/結果リンクには適用しない。
+11. ランキング影響: RPC名、game_slug、URL、Supabase設定、ランキング取得は変更しない。
+12. 数値非変更: スコア・ゲージ・速度・判定閾値の定数は変更しない。
+13. 影響関数: `queueJump`、`updateGame`、`applyFailure`、`draw`、`finishGame`、`submitRankingOnce`、入力イベント。
+14. テスト方法: HTML内JS構文確認、固定文字列確認、禁止文字列確認、手動プレイ観点確認。

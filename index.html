@@ -44,7 +44,7 @@ button.common-x-share { background:#000 !important; color:#fff !important; borde
  const {source,catalogs}=JSON.parse(document.getElementById('localeData').textContent);
  const indices=new Map(source.map((s,i)=>[s,i]));
  const names={'ja':'日本語','en':'English','es':'Español','pt-BR':'Português (Brasil)','zh-Hans':'简体中文','fr':'Français','de':'Deutsch','ko':'한국어','ru':'Русский','it':'Italiano','zh-Hant':'繁體中文','id':'Bahasa Indonesia','tr':'Türkçe','vi':'Tiếng Việt','th':'ไทย'};
- function match(value){const s=String(value||'').replace(/_/g,'-').toLowerCase();const exact=Object.keys(catalogs).find(k=>k.toLowerCase()===s);if(exact)return exact;if(s.startsWith('zh'))return /hant|tw|hk|mo/.test(s)?'zh-Hant':'zh-Hans';if(s==='pt'||s.startsWith('pt-'))return'pt-BR';const base=s.split('-')[0];return Object.hasOwn(catalogs,base)?base:null;}
+ function match(value){const s=String(value||'').replace(/_/g,'-').toLowerCase();const exact=Object.keys(catalogs).find(k=>k.toLowerCase()===s);if(exact)return exact;if(/^zh-hans(?:-|$)/.test(s))return'zh-Hans';if(/^zh-hant(?:-|$)/.test(s))return'zh-Hant';if(s.startsWith('zh'))return /(?:^|-)(?:tw|hk|mo)(?:-|$)/.test(s)?'zh-Hant':'zh-Hans';if(s==='pt'||s.startsWith('pt-'))return'pt-BR';const base=s.split('-')[0];return Object.hasOwn(catalogs,base)?base:null;}
  let stored;try{stored=localStorage.getItem('kanijan:language')}catch(_){}
  let lang=match(stored)||(navigator.languages||[navigator.language]).map(match).find(Boolean)||'en';
  const staticNodes=[],attrs=[],bindings=new Map();
@@ -199,6 +199,7 @@ async function submitRankingOnce(){
  finally{inFlightReceipts.delete(p.id);if(run===rankingRun&&receipt===game.receipt)game.rankingSubmitStarted=false;}
 }
 /* 14. ランキング取得 */
+function parseLeaderboard(data){if(!Array.isArray(data)||data.some(r=>!r||!Number.isSafeInteger(r.rank_no)||r.rank_no<1||typeof r.display_name!=='string'||!Number.isInteger(r.best_score)))throw new Error('Invalid leaderboard response');return data;}
 async function fetchRanking(force=false){
  if(game.rankingFetched&&!force)return;
  const run=rankingRun,request=++rankingRequest;lastRankingRows=null;
@@ -207,14 +208,14 @@ async function fetchRanking(force=false){
   const data=await supabaseRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:30});
   if(run!==rankingRun||request!==rankingRequest)return;
   game.rankingFetched=true;
-  const rows=Array.isArray(data)?data:(data&&Array.isArray(data.data)?data.data:[]);
+  const rows=parseLeaderboard(data);
   lastRankingRows=rows;renderRanking(rows);
  }catch(e){
   if(run!==rankingRun||request!==rankingRequest)return;
   game.rankingFetched=false;setText('rankingList','ランキング取得に失敗しました。「ランキングを再取得」で再試行できます。');
  }
 }
-function renderRanking(rows){$('rankingList').innerHTML=rows.length?rows.slice(0,30).map((r,i)=>`<li value="${Number(r.rank_no??(i+1))}">${escapeHtml(r.display_name??r.player_name??'')}：${escapeHtml(t('{0}点',Number(r.score??r.best_score??0)))}</li>`).join(''):`<li>${escapeHtml(t('まだランキングがありません'))}</li>`;}
+function renderRanking(rows){$('rankingList').innerHTML=rows.length?rows.slice(0,30).map((r,i)=>`<li value="${r.rank_no}">${escapeHtml(r.display_name)}：${escapeHtml(t('{0}点',r.best_score))}</li>`).join(''):`<li>${escapeHtml(t('まだランキングがありません'))}</li>`;}
 function escapeHtml(v){return String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 /* 15. シェア */
 function shareText(text){window.openGameShareX(text);}

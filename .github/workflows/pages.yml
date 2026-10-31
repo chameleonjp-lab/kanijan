@@ -27,6 +27,9 @@ jobs:
       - run: python3 tools/check-site.py
       - run: node tools/share.test.mjs
       - run: node tools/participation.test.mjs
+      - run: python3 tools/build-locales.py --check
+      - run: node tools/audio.test.mjs
+      - run: node tools/locales.test.mjs
       - name: Stage the validated public file
         run: python3 tools/check-site.py --out _site
       - name: Upload this commit's Pages artifact

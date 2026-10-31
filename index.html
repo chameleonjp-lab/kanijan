@@ -12,15 +12,72 @@
 </head>
 <body>
 <div class="app">
-<section id="homeScreen" class="screen active"><div class="title">🦀<br>カニジャン</div><div class="card"><p class="lead">横・斜めから🦀本体へ飛んでくる🍣🍤を、直前ジャンプで乗りこなそう！50段から🍥も登場！</p><div class="buttons"><button id="startBtn" class="btn primary">ゲーム開始</button><button id="ruleBtn" class="btn blue">ルール説明</button><button id="shareHomeBtn" class="btn">ゲームをシェア</button><a class="btn linkbtn" href="https://chameleonjp-lab.github.io/chameleonjp_lab/">他のゲームで遊ぶ</a></div></div></section>
+<section id="homeScreen" class="screen active"><div class="title">🦀<br>カニジャン</div><div class="card"><p class="lead">横・斜めから🦀本体へ飛んでくる🍣🍤を、直前ジャンプで乗りこなそう！50段から🍥も登場！</p><div class="buttons"><button id="startBtn" class="btn primary">ゲーム開始</button><button id="ruleBtn" class="btn blue">ルール説明</button><button id="shareHomeBtn" class="btn common-x-share">Xでシェア</button><a class="common-ranking-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/ranking.html?game=kanijan">ランキング</a><a class="btn linkbtn" href="https://chameleonjp-lab.github.io/chameleonjp_lab/">他のゲームで遊ぶ</a></div></div></section>
 <section id="ruleScreen" class="screen"><div class="card"><h1>ルール説明</h1><p>飛んでくる🍣🍤を、🦀に当たる直前でジャンプ！</p><p>直前なら PERFECT、少し早くても OK。</p><h2>ゲージが増える時</h2><ul><li>早すぎると乗れずに -30点。ゲージが増えます。</li><li>ジャンプできずにぶつかると -50点。ゲージが大きく増えます。</li></ul><h2>ゲージが減る時</h2><ul><li>PERFECT / OK を取るとゲージが減ります。</li><li>50段からは速い🍥も飛んできます。</li></ul><p>ゲージが100になると終了です。60秒以内に高いジャン点を目指そう！</p><button id="ruleBackBtn" class="btn primary">ホームへ</button></div></section>
 <section id="nameScreen" class="screen"><div class="card"><h1>名前入力</h1><p>ランキングに使う名前を入力してください。</p><input id="nameInput" class="input" maxlength="10" autocomplete="nickname" placeholder="10文字まで"><p id="nameError" class="error-msg"></p><div class="buttons"><button id="readyBtn" class="btn primary">この名前で開始</button><button id="nameBackBtn" class="btn">戻る</button></div><p class="note">名前は端末に保存できます。公式ランキング用のスコア本体は保存しません。</p></div></section>
 <section id="readyScreen" class="screen"><div class="card"><h1>READY</h1><div id="readyCount" class="ready-num">3</div><p class="lead">飛んでくる🍣🍤をよく見よう！</p></div></section>
 <section id="gameScreen" class="screen"><div class="topbar"><div>ジャン点<br><span id="scoreText">0点</span></div><div>高さ<br><span id="heightText">0段</span></div><div>残り<br><span id="timeText">60.0秒</span></div><button id="retireBtn" class="btn danger">リタイア</button></div><div class="meter"><span id="balanceBar"></span></div><div class="game-wrap"><div id="canvasBox" class="canvas-box"><canvas id="gameCanvas"></canvas></div><div class="jump-area"><button id="jumpBtn" class="btn primary jump">🦀ジャンプ</button><div id="statusText" class="status">タイミングよくタップ！</div></div></div></section>
 <section id="endingScreen" class="screen"><div class="card"><h1>終了！</h1><p class="lead">結果を集計中…</p></div></section>
-<section id="resultScreen" class="screen"><div class="card"><h1 id="resultTitle">結果</h1><p id="resultText" class="lead"></p><p>ジャン点：<b id="resultScore">0点</b></p><p>高さ：<b id="resultHeight">0段</b> / 最大コンボ：<b id="resultCombo">0</b></p><p id="submitStatus" class="note">ランキング送信準備中</p><p id="submitError" class="error-msg"></p><h2>ランキング</h2><ol id="rankingList" class="ranking"><li>読み込み中...</li></ol><div class="buttons"><button id="retryBtn" class="btn primary">もう一度</button><button id="shareResultBtn" class="btn">結果をシェア</button><a class="btn linkbtn" href="https://chameleonjp-lab.github.io/chameleonjp_lab/">他のゲームで遊ぶ</a></div></div></section>
+<section id="resultScreen" class="screen"><div class="card"><h1 id="resultTitle">結果</h1><p id="resultText" class="lead"></p><p>ジャン点：<b id="resultScore">0点</b></p><p>高さ：<b id="resultHeight">0段</b> / 最大コンボ：<b id="resultCombo">0</b></p><p id="submitStatus" class="note">ランキング送信準備中</p><p id="submitError" class="error-msg"></p><h2>ランキング</h2><ol id="rankingList" class="ranking"><li>読み込み中...</li></ol><div class="buttons"><button id="retryBtn" class="btn primary">もう一度</button><button id="shareResultBtn" class="btn common-x-share">Xでシェア</button><a class="common-ranking-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/ranking.html?game=kanijan">ランキング</a><a class="btn linkbtn" href="https://chameleonjp-lab.github.io/chameleonjp_lab/">他のゲームで遊ぶ</a></div></div></section>
 <section id="errorScreen" class="screen"><div class="card"><h1>通信失敗</h1><p id="errorText">ランキング送信に失敗しました</p><button id="errorBackBtn" class="btn primary">結果へ戻る</button></div></section>
 </div><div id="debugPanel" class="debug hide"></div>
+<style>
+button.common-x-share { background:#000 !important; color:#fff !important; border:1px solid #555; white-space:normal; overflow-wrap:anywhere; min-height:44px; padding:12px 16px; line-height:1.4; }
+.common-ranking-link { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:44px; padding:12px 16px; border:1px solid currentColor; border-radius:10px; color:inherit; text-decoration:none; white-space:normal; overflow-wrap:anywhere; line-height:1.4; }
+#commonShareFallback { box-sizing:border-box; width:min(92vw,32rem); max-height:85dvh; overflow:auto; border:1px solid #777; border-radius:12px; padding:20px; background:#fff; color:#111; }
+#commonShareFallback::backdrop { background:#0009; }
+#commonShareFallback textarea { box-sizing:border-box; width:100%; min-height:160px; padding:10px; font:16px/1.5 sans-serif; color:#111; background:#fff; user-select:text; -webkit-user-select:text; }
+#commonShareFallback button { min-height:44px; margin:6px; padding:10px 16px; white-space:normal; color:#fff; background:#222; }
+</style>
+<dialog id="commonShareFallback" aria-labelledby="commonShareHeading">
+  <h2 id="commonShareHeading">共有文をコピー</h2>
+  <p>Xを開けない場合は、本文とURLをコピーして投稿できます。</p>
+  <textarea id="commonShareText" readonly aria-label="共有する本文とURL"></textarea>
+  <p id="commonShareStatus" role="status" aria-live="polite"></p>
+  <button id="commonShareCopy" type="button">コピー</button>
+  <button id="commonShareClose" type="button">閉じる</button>
+</dialog>
+<script>
+(() => {
+  'use strict';
+  const dialog = document.getElementById('commonShareFallback');
+  const field = document.getElementById('commonShareText');
+  const status = document.getElementById('commonShareStatus');
+  window.openGameShareX = (text) => {
+    const body = String(text);
+    const intent = new URL('https://x.com/intent/post');
+    intent.searchParams.set('text', body);
+    let popup;
+    try {
+      popup = window.open('', '_blank');
+      if (popup) {
+        popup.opener = null;
+        popup.location.replace(intent.href);
+        return;
+      }
+    } catch (_) {
+      try { if (popup) popup.close(); } catch (_) {}
+    }
+    field.value = body;
+    status.textContent = '';
+    if (!dialog.open) dialog.showModal();
+    field.focus();
+    field.select();
+  };
+  document.getElementById('commonShareCopy').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(field.value);
+      status.textContent = 'コピーしました。投稿はXで確認してください。';
+    } catch (_) {
+      field.focus();
+      field.select();
+      status.textContent = '本文を選択して手動でコピーしてください。';
+    }
+  });
+  document.getElementById('commonShareClose').addEventListener('click', () => dialog.close());
+})();
+</script>
+
 <script>
 /* 1. 定数 */
 const DEBUG=false;const CLIENT_VERSION='kanijan-1.0.0';const GAME_SLUG='kanijan';const GAME_URL='https://chameleonjp.codeberg.page/kanijan/';const OTHER_URL='https://chameleonjp-lab.github.io/chameleonjp_lab/';
@@ -70,10 +127,10 @@ function finishGame(reason){if(state.current!==STATES.PLAYING)return;game.result
 async function supabaseRpc(fn,body){const res=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`},body:JSON.stringify(body)});if(!res.ok)throw new Error(`${fn} ${res.status}`);const text=await res.text();return text?JSON.parse(text):null;}
 async function submitRankingOnce(){if(game.rankingSubmitStarted)return;game.rankingSubmitStarted=true;if(game.finalScore<=0&&!game.wasRetired){game.rankingStatus='0点のため未送信';$('submitStatus').textContent=game.rankingStatus;return;}$('submitStatus').textContent='ランキング送信中...';try{await supabaseRpc('submit_score',{p_display_name:game.playerName,p_game_slug:GAME_SLUG,p_score:Math.trunc(game.finalScore),p_client_version:CLIENT_VERSION});game.rankingSubmitted=true;game.rankingStatus='ランキング送信完了';$('submitStatus').textContent=game.rankingStatus;}catch(e){game.rankingStatus='送信失敗';$('submitStatus').textContent='ランキング送信に失敗しました';$('submitError').textContent='ランキング送信に失敗しました';}}
 /* 14. ランキング取得 */
-async function fetchRanking(){if(game.rankingFetched)return;game.rankingFetched=true;try{const data=await supabaseRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:10});const rows=Array.isArray(data)?data:(data&&Array.isArray(data.data)?data.data:[]);$('rankingList').innerHTML=rows.length?rows.map((r,i)=>`<li>${escapeHtml(r.display_name||r.player_name||'ななし')}：${Number(r.score||r.best_score||0)}点</li>`).join(''):'<li>まだランキングがありません</li>';}catch(e){$('rankingList').innerHTML='<li>ランキング取得に失敗しました</li>';}}
+async function fetchRanking(){if(game.rankingFetched)return;game.rankingFetched=true;try{const data=await supabaseRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:30});const rows=Array.isArray(data)?data:(data&&Array.isArray(data.data)?data.data:[]);$('rankingList').innerHTML=rows.length?rows.map((r,i)=>`<li value="${Number(r.rank_no??(i+1))}">${escapeHtml(r.display_name||r.player_name||'ななし')}：${Number(r.score||r.best_score||0)}点</li>`).join(''):'<li>まだランキングがありません</li>';}catch(e){$('rankingList').innerHTML='<li>ランキング取得に失敗しました</li>';}}
 function escapeHtml(v){return String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 /* 15. シェア */
-async function shareText(text){try{if(navigator.share){await navigator.share({text});return;}if(navigator.clipboard)await navigator.clipboard.writeText(text);}catch(e){console.warn('share failed',e);}}
+function shareText(text){window.openGameShareX(text);}
 function shareHome(){shareText(`カニジャン\n飛んでくる🍣🍤を、🦀に当たる直前でジャンプ！\n${GAME_URL}`);}function shareResult(){shareText(`カニジャン\nジャン点：${game.finalScore}点\n高さ：${game.finalHeight}段\n最大コンボ：${game.finalCombo}\n飛んでくる🍣🍤を🦀でジャンプ！\n${GAME_URL}`);}
 /* 16. デバッグ */
 function updateFps(now){state.frames++;if(now-state.fpsTime>1000){state.fps=state.frames;state.frames=0;state.fpsTime=now;}}function updateDebug(){const p=$('debugPanel');if(!DEBUG){p.classList.add('hide');return;}p.classList.remove('hide');p.textContent=`fps:${state.fps}\nstate:${state.current}\nscore:${game.score}\nheight:${game.height}\ncombo:${game.combo}\nparticles:${game.particles.length}\ncanvas:${canvas.width}x${canvas.height}\nranking:${game.rankingStatus}`;}

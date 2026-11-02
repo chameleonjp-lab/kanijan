@@ -26,6 +26,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 tools/check-site.py
+      - run: node --test tools/social-card.test.mjs tools/share-visibility.test.mjs
       - run: node tools/share.test.mjs
       - run: node tools/participation.test.mjs
       - run: node tools/ranking-contract.test.mjs
@@ -40,6 +41,13 @@ jobs:
           path: test-artifacts
       - run: node tools/browser-smoke.cjs
       - run: BROWSER_ENGINE=webkit node tools/browser-smoke.cjs
+      - run: node tools/share-visual.cjs
+      - run: BROWSER=webkit node tools/share-visual.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: share-acceptance-${{ github.sha }}
+          path: test-artifacts
       - name: Stage the validated public file
         run: python3 tools/check-site.py --out _site
       - name: Upload this commit's Pages artifact

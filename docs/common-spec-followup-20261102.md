@@ -51,3 +51,7 @@
 iPhone17Pro Safariでは縦横/任意名/音0/共有から戻る/画面ロック後の古音なし、60秒本編から結果の状態保持を確認してください。実機・聴取・母語査読・長時間負荷をCI成功で代替しません。
 
 戻す場合は安全な旧commitへ戻すPRを同検証経路で本人マージ。receiptのsent/history/pending・既存名/音/言語は消さず、既知受理を未送信へ変換しません。旧Codebergの導線・サーバー記録は今回無変更です。
+
+
+## 09:50 JST normal acknowledgement validation
+Baseline PR9 `7875594229026d00c9fa45687eaffe3637190400`: a public submission regression reproduced out-of-int4 / best-below-submitted receipts marking the durable result sent. Validation now checks PostgreSQL integer bounds and the current descending best contract. Signed first-score history remains valid; game score/retirement rules and stored identity remain unchanged. RED→GREEN, all 40 local tests, site staging and 15×85 catalog verification pass. Independent review and current-head Chromium/WebKit CI remain pending, separate from device/production acceptance. No DB or production writes.

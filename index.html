@@ -118,19 +118,20 @@ button.common-x-share { background:#000 !important; color:#fff !important; borde
 <script>
 /* Sound events follow visible outcomes; failures never block gameplay. */
 (()=>{
- const read=(key,fallback)=>{try{const v=localStorage.getItem(key);return v===null?fallback:v;}catch(_){return fallback;}};
- let enabled=read('kanijan:sound','on')!=='off';
- const saved=read('kanijan:volume',null);let volume=saved===null||String(saved).trim()===''||!Number.isFinite(Number(saved))||Number(saved)<0||Number(saved)>1?.5:Number(saved);
+ // An unread preference is not an absent one: stay silent until explicitly changed.
+ const read=(key,fallback,unread)=>{try{const v=localStorage.getItem(key);return v===null?fallback:v;}catch(_){return unread;}};
+ let enabled=read('kanijan:sound','on','off')!=='off';
+ const saved=read('kanijan:volume',null,'0');let volume=saved===null||String(saved).trim()===''||!Number.isFinite(Number(saved))||Number(saved)<0||Number(saved)>1?.5:Number(saved);
  let context=null,last=-Infinity;const voices=new Set();
  const tones={start:[440,660],perfect:[660,880],ok:[440,550],early:[220,160],hit:[150,90],milestone:[660,880,1100],end:[440,330,220]};
- function persist(){try{localStorage.setItem('kanijan:sound',enabled?'on':'off');localStorage.setItem('kanijan:volume',String(volume));}catch(_){}}
+ function persist(key,value){try{localStorage.setItem(key,value);}catch(_){}}
  function cleanup(v){if(!voices.delete(v))return;try{v.o?.disconnect()}catch(_){}try{v.g?.disconnect()}catch(_){}}
  function stop(){for(const v of [...voices]){try{v.o?.stop()}catch(_){}cleanup(v);}}
  function unlock(){if(!enabled||volume===0||document.hidden)return false;try{if(context?.state==='closed'){stop();context=null;last=-Infinity;}if(!context){const A=window.AudioContext||window.webkitAudioContext;if(!A)return false;context=new A();context.onstatechange=()=>{if(context.state!=='running')stop();};}if(context.state!=='running'){stop();Promise.resolve(context.resume()).catch(()=>{});return false;}return true;}catch(_){return false;}}
  function play(kind){try{if(!enabled||volume===0||document.hidden||!unlock()||!tones[kind])return;const now=context.currentTime;if(kind!=='end'&&kind!=='milestone'&&now-last<.08)return;if(kind==='end'||kind==='milestone')stop();last=now;const pitch=tones[kind],step=.085;for(let i=0;i<pitch.length;i++){if(voices.size>=6)break;const v={o:null,g:null};voices.add(v);const o=v.o=context.createOscillator(),g=v.g=context.createGain(),at=now+i*step;o.type=kind==='hit'?'triangle':'sine';o.frequency.setValueAtTime(pitch[i],at);g.gain.setValueAtTime(0,at);g.gain.linearRampToValueAtTime(volume*.1,at+.008);g.gain.exponentialRampToValueAtTime(.0001,at+.12);o.connect(g);g.connect(context.destination);o.onended=()=>cleanup(v);o.start(at);o.stop(at+.13);}}catch(_){stop();}}
  function render(){const button=document.getElementById('soundToggle');button.textContent=t(enabled?'オン':'オフ');button.setAttribute('aria-pressed',String(enabled));document.getElementById('soundVolume').value=String(volume);}
- function setEnabled(value){enabled=Boolean(value);if(!enabled)stop();persist();render();if(enabled)unlock();}
- function setVolume(value){const n=Number(value);if(!Number.isFinite(n)||n<0||n>1)return;volume=n;if(volume===0)stop();persist();render();if(volume>0)unlock();}
+ function setEnabled(value){enabled=Boolean(value);if(!enabled)stop();persist('kanijan:sound',enabled?'on':'off');render();if(enabled)unlock();}
+ function setVolume(value){const n=Number(value);if(!Number.isFinite(n)||n<0||n>1)return;volume=n;if(volume===0)stop();persist('kanijan:volume',String(volume));render();if(volume>0)unlock();}
  document.getElementById('soundToggle').addEventListener('click',()=>setEnabled(!enabled));
  document.getElementById('soundVolume').addEventListener('input',e=>setVolume(e.target.value));
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();try{if(context)Promise.resolve(context.suspend()).catch(()=>{});}catch(_){}}});

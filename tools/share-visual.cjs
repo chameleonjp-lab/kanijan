@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const{inspectShareTarget}=require('./share-visibility.cjs'),root=path.resolve(__dirname,'..');
 const raw=fs.readFileSync(path.join(root,'index.html'),'utf8'),marker='function init(){';assert.equal(raw.split(marker).length,2);
 const html=raw.replace(marker,'window.__shareTest={restoreReceipt,state:()=>({currentScreen:state.current,receipt:game.receipt,finalScore:game.finalScore,finalHeight:game.finalHeight,finalCombo:game.finalCombo,submissionId:game.submissionId}),t};\n'+marker),{source,catalogs}=JSON.parse(raw.match(/<script id="localeData" type="application\/json">([\s\S]*?)<\/script>/)[1]);
-const origin='https://kanijan.test',publicUrl='https://chameleonjp.codeberg.page/kanijan/';
+const origin='https://kanijan.test',publicUrl='https://chameleonjp-lab.github.io/kanijan/';
 async function visible(page,selector){const el=page.locator(selector);assert.ok(await el.isVisible(),selector);await el.scrollIntoViewIfNeeded();const a=await el.evaluate(inspectShareTarget);assert.ok(a.visible&&a.viewport&&a.unclipped&&a.hit&&a.fits&&a.width>=44&&a.height>=44,selector+' '+JSON.stringify(a));return el;}
 (async()=>{
  const engine=process.env.BROWSER||'chromium';assert.ok(['chromium','webkit'].includes(engine));const browser=await engines[engine].launch({headless:true});const unexpected=[],errors=[],intents=[];let submissions=0,cases=0;

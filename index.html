@@ -5,18 +5,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#f97316">
 <title>カニジャン</title>
+  <link rel="canonical" href="https://chameleonjp-lab.github.io/kanijan/">
 <meta property="og:type" content="website" />
 <meta property="og:title" content="カニジャン" />
 <meta property="og:description" content="飛んでくる食材をジャンプで乗りこなす、60秒のタイミングゲーム。" />
-<meta property="og:url" content="https://chameleonjp.codeberg.page/kanijan/" />
-<meta property="og:image" content="https://chameleonjp.codeberg.page/kanijan/assets/social-card.png" />
+<meta property="og:url" content="https://chameleonjp-lab.github.io/kanijan/" />
+<meta property="og:image" content="https://chameleonjp-lab.github.io/kanijan/assets/social-card.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="カニジャンの実ゲーム描画。カニへ飛んでくるエビ天と水色の背景。" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="カニジャン" />
 <meta name="twitter:description" content="飛んでくる食材をジャンプで乗りこなす、60秒のタイミングゲーム。" />
-<meta name="twitter:image" content="https://chameleonjp.codeberg.page/kanijan/assets/social-card.png" />
+<meta name="twitter:image" content="https://chameleonjp-lab.github.io/kanijan/assets/social-card.png" />
 
 <style>
 :root{--bg:#fff7ed;--ink:#3b1f0f;--main:#f97316;--sub:#0ea5e9;--card:#ffffffee;--danger:#dc2626;--safe-bottom:env(safe-area-inset-bottom,0px)}
@@ -142,7 +143,7 @@ button.common-x-share { background:#000 !important; color:#fff !important; borde
 
 <script>
 /* 1. 定数 */
-const DEBUG=false;const CLIENT_VERSION='kanijan-common-20261031';const GAME_SLUG='kanijan';const GAME_URL='https://chameleonjp.codeberg.page/kanijan/';const OTHER_URL='https://chameleonjp-lab.github.io/chameleonjp_lab/';
+const DEBUG=false;const CLIENT_VERSION='kanijan-common-20261031';const GAME_SLUG='kanijan';const GAME_URL='https://chameleonjp-lab.github.io/kanijan/';const OTHER_URL='https://chameleonjp-lab.github.io/chameleonjp_lab/';
 const STATES={HOME:'HOME',RULE:'RULE',READY:'READY',PLAYING:'PLAYING',ENDING:'ENDING',RESULT:'RESULT',ERROR:'ERROR'};const PLAY_TIME=60;const MAX_BALANCE=100;const MAX_STACK=100;const DRAW_STACK=40;const MAX_EFFECTS=20;const MAX_PARTICLES=80;
 const BASE_SUSHI_SPEED=150;const TYPES={sushi:{emoji:'🍣',speed:225,maxSpeed:320},tempura:{emoji:'🍤',speed:370,maxSpeed:480},naruto:{emoji:'🍥',speed:BASE_SUSHI_SPEED*2.3,maxSpeed:560}};const NARUTO_MIN_HEIGHT=50;const NARUTO_RATE=0.2;const COLLISION_RADIUS=18;const JUDGE={perfect:0.12,ok:0.28};const GAUGE_DELTA={PERFECT:-20,OK:-10,EARLY:15,HIT:25};const SCORE_DELTA={PERFECT:100,OK:50,EARLY:-30,HIT:-50};
 /* 2. Supabase設定 */
